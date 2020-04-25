@@ -4,6 +4,9 @@
  * Copyright 2015-2019 MIPT-MIPS
  */
  
+#ifndef CHECKER_H
+#define CHECKER_H
+ 
 #include <func_sim/func_sim.h>
 
 struct CheckerMismatch final : Exception
@@ -21,10 +24,12 @@ class Checker {
     using FuncInstr = typename ISA::FuncInstr;
 public:
     void check( const FuncInstr& instr);
-    void init( Endian endian, const FuncMemory& mem, Kernel* kernel);
+    void init( Endian endian, Kernel* kernel, std::string_view isa);
     void set_target( const Target& value);
     void driver_step( const FuncInstr& instr);
 private:
     std::shared_ptr<FuncSim<ISA>> sim;
     bool active = false;
 };
+
+#endif // CHECKER_H

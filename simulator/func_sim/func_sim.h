@@ -14,6 +14,7 @@
 #include <infra/exception.h>
 #include <memory/memory.h>
 #include <simulator.h>
+#include <func_sim/ooo_window/ooo_window.h>
 
 #include <memory>
 #include <string>
@@ -21,14 +22,21 @@
 class Driver;
 class Operation;
 
+// NOLINTNEXTLINE(fuchsia-multiple-inheritance) Cannot inherit Simulator from Log, since PerfSim inherits Module as well
+class BasicFuncSim : public Simulator, public Log {
+protected:
+    explicit BasicFuncSim( std::string_view isa) : Simulator( isa) { }
+};
+
 template <typename ISA>
-class FuncSim : public Simulator, public Log
+class FuncSim : public BasicFuncSim
 {
     using FuncInstr = typename ISA::FuncInstr;
     using Register = typename ISA::Register;
     using RegisterUInt = typename ISA::RegisterUInt;
 
     private:
+        OOOWindow<FuncInstr> ooo_window;
         RF<FuncInstr> rf;
         uint64 sequence_id = 0;
         std::shared_ptr<FuncMemory> mem;
@@ -44,10 +52,10 @@ class FuncSim : public Simulator, public Log
         void update_and_check_nop_counter( const FuncInstr& instr);
 
         uint64 read_register( Register index) const { return narrow_cast<uint64>( rf.read( index)); }
-        void write_register( Register index, uint64 value) { return rf.write( index, narrow_cast<RegisterUInt>( value)); }
+        void write_register( Register index, uint64 value) { rf.write( index, narrow_cast<RegisterUInt>( value)); }
 
     public:
-        FuncSim( Endian endian, bool log);
+        FuncSim( Endian endian, bool log, std::string_view isa);
 
         void set_memory( std::shared_ptr<FuncMemory> memory) final;
         void set_kernel( std::shared_ptr<Kernel> k) final { kernel = std::move( k); }
@@ -66,6 +74,7 @@ class FuncSim : public Simulator, public Log
         Addr get_pc() const final { return pc[0]; }
 
         size_t sizeof_register() const final { return bytewidth<RegisterUInt>; }
+        size_t max_cpu_register() const final { return Register::MAX_REG; }
 
         uint64 read_cpu_register( size_t regno) const final { return read_register( Register::from_cpu_index( regno)); }
         uint64 read_gdb_register( size_t regno) const final;

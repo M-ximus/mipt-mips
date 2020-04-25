@@ -4,94 +4,118 @@
  * Copyright 2018 MIPT-MIPS
  */
 
-#include "../rf.h"
-
 #include <catch.hpp>
 #include <func_sim/operation.h>
+#include <func_sim/rf/rf.h>
 #include <mips/mips_register/mips_register.h>
 
 using MIPS32Instr = BaseInstruction<uint32, MIPSRegister>;
 
 static_assert(MIPSRegister::MAX_REG >= 32);
 
-TEST_CASE( "RF: read_write_rf")
+static auto get_filled_rf()
 {
     auto rf = std::make_unique<RF<MIPS32Instr>>();
 
-    // Fill array using write() and check correctness using read()
     for( uint8 i = 0; i < 32; ++i)
     {
         rf->write( MIPSRegister::from_cpu_index(i), i);
 
         // Try to write something in zero register
         rf->write( MIPSRegister::zero(), i);
-
-        // Checks
-        CHECK( rf->read( MIPSRegister::from_cpu_index(i)) == i);
-        CHECK( rf->read( MIPSRegister::zero()) == 0u);
     }
+
+    return rf;
+}
+
+TEST_CASE( "RF: read_write_rf")
+{
+    auto rf = get_filled_rf();
+
+    CHECK( rf->read( MIPSRegister::zero()) == 0U);
+    for ( uint8 i = 1; i < 32; ++i)
+        CHECK( rf->read( MIPSRegister::from_cpu_index(i)) == i);
+}
+
+TEST_CASE( "RF mixed test")
+{
+    auto rf = get_filled_rf();
 
     for( uint8 i = 1; i < 32; ++i)
     {
-        rf->write( MIPSRegister::from_cpu_index(i), 0u);
-        rf->write( MIPSRegister::from_cpu_index(i), 0x12345678u, 0xFFu);
-        CHECK( rf->read( MIPSRegister::from_cpu_index(i)) == 0x78u); // only one byte must go
+        rf->write( MIPSRegister::from_cpu_index(i), 0U);
+        rf->write( MIPSRegister::from_cpu_index(i), 0x12345678U, 0xFFU);
+        CHECK( rf->read( MIPSRegister::from_cpu_index(i)) == 0x78U); // only one byte must go
 
-        rf->write( MIPSRegister::from_cpu_index(i), 0u);
-        rf->write( MIPSRegister::from_cpu_index(i), 0x12345678u, 0xFF00u);
-        CHECK( rf->read( MIPSRegister::from_cpu_index(i)) == 0x5600u);
+        rf->write( MIPSRegister::from_cpu_index(i), 0U);
+        rf->write( MIPSRegister::from_cpu_index(i), 0x12345678U, 0xFF00U);
+        CHECK( rf->read( MIPSRegister::from_cpu_index(i)) == 0x5600U);
 
-        rf->write( MIPSRegister::from_cpu_index(i), 0u);
-        rf->write( MIPSRegister::from_cpu_index(i), 0x12345678u, 0xFFFFu);
-        CHECK( rf->read( MIPSRegister::from_cpu_index(i)) == 0x5678u);
+        rf->write( MIPSRegister::from_cpu_index(i), 0U);
+        rf->write( MIPSRegister::from_cpu_index(i), 0x12345678U, 0xFFFFU);
+        CHECK( rf->read( MIPSRegister::from_cpu_index(i)) == 0x5678U);
 
-        rf->write( MIPSRegister::from_cpu_index(i), 0u);
-        rf->write( MIPSRegister::from_cpu_index(i), 0x12345678u, 0xFFFF00u);
-        CHECK( rf->read( MIPSRegister::from_cpu_index(i)) == 0x345600u);
+        rf->write( MIPSRegister::from_cpu_index(i), 0U);
+        rf->write( MIPSRegister::from_cpu_index(i), 0x12345678U, 0xFFFF00U);
+        CHECK( rf->read( MIPSRegister::from_cpu_index(i)) == 0x345600U);
 
-        rf->write( MIPSRegister::from_cpu_index(i), 0u);
-        rf->write( MIPSRegister::from_cpu_index(i), 0x12345678u, 0xFFFFFF00u);
-        CHECK( rf->read( MIPSRegister::from_cpu_index(i)) == 0x12345600u);
+        rf->write( MIPSRegister::from_cpu_index(i), 0U);
+        rf->write( MIPSRegister::from_cpu_index(i), 0x12345678U, 0xFFFFFF00U);
+        CHECK( rf->read( MIPSRegister::from_cpu_index(i)) == 0x12345600U);
 
-        rf->write( MIPSRegister::from_cpu_index(i), 0u);
-        rf->write( MIPSRegister::from_cpu_index(i), 0x12345678u, 0xFF0000u);
-        CHECK( rf->read( MIPSRegister::from_cpu_index(i)) == 0x340000u);
+        rf->write( MIPSRegister::from_cpu_index(i), 0U);
+        rf->write( MIPSRegister::from_cpu_index(i), 0x12345678U, 0xFF0000U);
+        CHECK( rf->read( MIPSRegister::from_cpu_index(i)) == 0x340000U);
 
-        rf->write( MIPSRegister::from_cpu_index(i), 0x1u);
-        rf->write( MIPSRegister::from_cpu_index(i), 0x12345678u, 0xFF0000u);
-        CHECK( rf->read( MIPSRegister::from_cpu_index(i)) == 0x340001u);
+        rf->write( MIPSRegister::from_cpu_index(i), 0x1U);
+        rf->write( MIPSRegister::from_cpu_index(i), 0x12345678U, 0xFF0000U);
+        CHECK( rf->read( MIPSRegister::from_cpu_index(i)) == 0x340001U);
 
-        rf->write( MIPSRegister::from_cpu_index(i), 0x9876u);
-        rf->write( MIPSRegister::from_cpu_index(i), 0x12345678u, 0xFF0000u);
-        CHECK( rf->read( MIPSRegister::from_cpu_index(i)) == 0x349876u);
+        rf->write( MIPSRegister::from_cpu_index(i), 0x9876U);
+        rf->write( MIPSRegister::from_cpu_index(i), 0x12345678U, 0xFF0000U);
+        CHECK( rf->read( MIPSRegister::from_cpu_index(i)) == 0x349876U);
 
-        rf->write( MIPSRegister::from_cpu_index(i), 0x5500u);
-        rf->write( MIPSRegister::from_cpu_index(i), 0x12345678u, 0xFFu);
-        CHECK( rf->read( MIPSRegister::from_cpu_index(i)) == 0x5578u);
+        rf->write( MIPSRegister::from_cpu_index(i), 0x5500U);
+        rf->write( MIPSRegister::from_cpu_index(i), 0x12345678U, 0xFFU);
+        CHECK( rf->read( MIPSRegister::from_cpu_index(i)) == 0x5578U);
 
-        rf->write( MIPSRegister::from_cpu_index(i), 0x558700u);
-        rf->write( MIPSRegister::from_cpu_index(i), 0x12345678u, 0xFF0000u);
-        CHECK( rf->read( MIPSRegister::from_cpu_index(i)) == 0x348700u);
+        rf->write( MIPSRegister::from_cpu_index(i), 0x558700U);
+        rf->write( MIPSRegister::from_cpu_index(i), 0x12345678U, 0xFF0000U);
+        CHECK( rf->read( MIPSRegister::from_cpu_index(i)) == 0x348700U);
     }
-
-    // Additional checks for mips_hi_lo
-    // Write 1 to HI and 0 to LO
-    rf->write( MIPSRegister::mips_hi(), 1u);
-    rf->write( MIPSRegister::mips_lo(), 0u);
-
-    CHECK( rf->read( MIPSRegister::mips_hi()) == 1u);
-    CHECK( rf->read( MIPSRegister::mips_lo()) == 0u);
-
-    // Check accumulating writes
-    rf->write( MIPSRegister::mips_hi(), 0u, all_ones<uint32>(), -1 /* subtract */);
-    rf->write( MIPSRegister::mips_lo(), 1u, all_ones<uint32>(), -1 /* subtract */);
-    CHECK( rf->read( MIPSRegister::mips_hi()) == 0u);
-    CHECK( rf->read( MIPSRegister::mips_lo()) == MAX_VAL32);
-
-    // Check accumulating writes
-    rf->write( MIPSRegister::mips_hi(), 0u, all_ones<uint32>(), +1 /* add */);
-    rf->write( MIPSRegister::mips_lo(), 1u, all_ones<uint32>(), +1 /* add */);
-    CHECK( rf->read( MIPSRegister::mips_hi()) == 1u);
-    CHECK( rf->read( MIPSRegister::mips_lo()) == 0u);
 }
 
+TEST_CASE( "MIPS RF: hi/lo")
+{
+    auto rf = std::make_unique<RF<MIPS32Instr>>();
+
+    rf->write( MIPSRegister::mips_hi(), 1U);
+    rf->write( MIPSRegister::mips_lo(), 0U);
+
+    CHECK( rf->read( MIPSRegister::mips_hi()) == 1U);
+    CHECK( rf->read( MIPSRegister::mips_lo()) == 0U);
+}
+
+TEST_CASE( "MIPS RF: accumulating subtraction")
+{
+    auto rf = std::make_unique<RF<MIPS32Instr>>();
+    rf->write( MIPSRegister::mips_hi(), 1U);
+    rf->write( MIPSRegister::mips_lo(), 0U);
+
+    rf->write( MIPSRegister::mips_hi(), 0U, all_ones<uint32>(), -1 /* subtract */);
+    rf->write( MIPSRegister::mips_lo(), 1U, all_ones<uint32>(), -1 /* subtract */);
+    CHECK( rf->read( MIPSRegister::mips_hi()) == 0U);
+    CHECK( rf->read( MIPSRegister::mips_lo()) == MAX_VAL32);
+}
+
+TEST_CASE( "MIPS RF: accumulating addition")
+{
+    auto rf = std::make_unique<RF<MIPS32Instr>>();
+    rf->write( MIPSRegister::mips_hi(), 0U);
+    rf->write( MIPSRegister::mips_lo(), MAX_VAL32);
+
+    rf->write( MIPSRegister::mips_hi(), 0U, all_ones<uint32>(), +1 /* add */);
+    rf->write( MIPSRegister::mips_lo(), 1U, all_ones<uint32>(), +1 /* add */);
+    CHECK( rf->read( MIPSRegister::mips_hi()) == 1U);
+    CHECK( rf->read( MIPSRegister::mips_lo()) == 0U);
+}

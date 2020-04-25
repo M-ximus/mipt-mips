@@ -19,7 +19,16 @@ Lectures and seminars are delivered each **Monday 11:30, room 108 of RT building
 [L5]:       https://github.com/MIPT-ILab/ca-lectures/blob/master/mipt-mips/2019/L5/Lecture%205%20-%20RISC-V%20Single-Cycle%20implementation.pptx?raw=true
 [L6]:       https://github.com/MIPT-ILab/ca-lectures/blob/master/mipt-mips/2019/L6/Lecture%206%20-%20Pipelining.%20Data%20Hazards.pptx?raw=true
 [L7]:       https://github.com/MIPT-ILab/ca-lectures/blob/master/mipt-mips/2019/L7/Lecture%207%20-%20Control%20Hazards.%20Branch%20Prediction.pptx?raw=true
-[P1]:       https://github.com/MIPT-ILab/ca-lectures/blob/master/mipt-mips/2019/P1/Practice%201%20-%20Combinational%20and%20Sequential%20Circuits.pptx?raw=true 
+[L8]:       https://github.com/MIPT-ILab/ca-lectures/blob/master/mipt-mips/2019/L8/Lecture%208%20-%20Caches,%20part%201.pptx?raw=true
+[L9]:       https://github.com/MIPT-ILab/ca-lectures/blob/master/mipt-mips/2019/L9/Lecture%209%20-%20Caches%2C%20part%202.pptx?raw=true
+[L10]:      https://github.com/MIPT-ILab/ca-lectures/blob/master/mipt-mips/2019/L10/Lecture%2010%20-%20Advanced%20Pipelining.pptx?raw=true
+[L11]:      https://github.com/MIPT-ILab/ca-lectures/blob/master/mipt-mips/2019/L11/Lecture%2011%20-%20Virtual%20Memory.pptx?raw=true
+[L12]:      https://github.com/MIPT-ILab/ca-lectures/blob/master/mipt-mips/2019/L12/Lecture%2012%20-%20ILP.%20Superscalar.%20OOO%20-%20part%201.pptx?raw=true
+[L13]:      https://github.com/MIPT-ILab/ca-lectures/blob/master/mipt-mips/2019/L13/Lecture%2013%20-%20OOO%20-%20part%202.pptx?raw=true
+[L14]:      https://github.com/MIPT-ILab/ca-lectures/blob/master/mipt-mips/2019/L14/Lecture%2014%20-%20OOO%20part%203,%20loads%20and%20stores%20(Load-Store%20Architecture).pptx?raw=true
+[L15]:      https://github.com/MIPT-ILab/ca-lectures/blob/master/mipt-mips/2019/L15/Lecture%2015%20-%20TLP%20-%20part%201.pptx?raw=true
+[L16]:      https://github.com/MIPT-ILab/ca-lectures/blob/master/mipt-mips/2019/L16/Lecture%2016%20-%20TLP%20-%20part%202%20(Multithreading,%20Synchronization).pptx?raw=true
+[P1]:       https://github.com/MIPT-ILab/ca-lectures/blob/master/mipt-mips/2019/P1/Practice%201%20-%20Combinational%20and%20Sequential%20Circuits.pptx?raw=true
 
 Date   | Type     | Event
 :----: | :------: | ------
@@ -33,6 +42,16 @@ Date   | Type     | Event
 21 Oct | Lecture  | **L5: RISC-V Single-Cycle implementation**<br>        • Slides: [no audio][L5]
 28 Oct | Lecture  | **L6: Pipelining. Data Hazards.**<br>                 • Slides: [no audio][L6]
 11 Nov | Lecture  | **L7: Control Hazards. Branch Prediction.**<br>       • Slides: [no audio][L7]
+25 Nov | Lecture  | **L8: Caches, part 1**<br>                            • Slides: [no audio][L8]
+02 Dec | Lecture  | **L9: Caches, part 2**<br>                            • Slides: [no audio][L9]
+07 Dec | Test     | **Final Test 1**<br>
+10 Feb | Lecture  | **L10: Advanced Pipelining**<br>                      • Slides: [no audio][L10]
+17 Feb | Lecture  | **L11: Virtual Memory**<br>                           • Slides: [no audio][L11]
+02 Mar | Lecture  | **L12: Instruction-Level Parallelism.<br> Superscalar. Out-of-Order, part 1**<br> • Slides: [no audio][L12]
+16 Mar | Lecture  | **L13: Out-of-Order, part 2**<br>                     • Slides: [no audio][L13]
+23 Mar | Online<br>lecture  | **L14: Out-of-Order, part 3: Loads and Stores**<br>   • Slides: [no audio][L14]
+30 Mar | Online<br>lecture  | **L15: Thread-Level Parallelism, part 1**<br>         • Slides: [no audio][L15]
+06 Apr | Online<br>lecture  | **L16: Thread-Level Parallelism, part 2**<br>         • Slides: [no audio][L16]
 
 You may find lectures of previous year [in our archive](https://github.com/MIPT-ILab/mipt-mips/wiki/Lectures-on-Computer-Architecture-in-2018).
 
@@ -60,6 +79,7 @@ MIPT | Name | Score | Comments
 718 | Andrey Agrachev | 13 | [#563](https://github.com/MIPT-ILab/mipt-mips/issues/563), [#465](https://github.com/MIPT-ILab/mipt-mips/issues/465), ¼[#626](https://github.com/MIPT-ILab/mipt-mips/issues/626), [#830](https://github.com/MIPT-ILab/mipt-mips/issues/830), [#248](https://github.com/MIPT-ILab/mipt-mips/issues/248), [#879](https://github.com/MIPT-ILab/mipt-mips/issues/879), [#821](https://github.com/MIPT-ILab/mipt-mips/issues/821) |
 714 | Yauheni Sharamed | 13 | [#599](https://github.com/MIPT-ILab/mipt-mips/issues/599), [#724](https://github.com/MIPT-ILab/mipt-mips/issues/724), [#649](https://github.com/MIPT-ILab/mipt-mips/issues/649), [#910](https://github.com/MIPT-ILab/mipt-mips/issues/910), [#925](https://github.com/MIPT-ILab/mipt-mips/issues/925) |
 618 | Alexander Misevich | 13 | [#37](https://github.com/MIPT-ILab/mipt-mips/issues/37), [#216](https://github.com/MIPT-ILab/mipt-mips/issues/216), [#201](https://github.com/MIPT-ILab/mipt-mips/issues/201), [#246](https://github.com/MIPT-ILab/mipt-mips/issues/246), [#124](https://github.com/MIPT-ILab/mipt-mips/issues/124), [#18](https://github.com/MIPT-ILab/mipt-mips/issues/18), [#283](https://github.com/MIPT-ILab/mipt-mips/issues/283), [#277](https://github.com/MIPT-ILab/mipt-mips/issues/277) |
+**81?** | **Eric Konks** | **12** | **[#520](https://github.com/MIPT-ILab/mipt-mips/issues/520), [#1140](https://github.com/MIPT-ILab/mipt-mips/issues/1140), [#1257](https://github.com/MIPT-ILab/mipt-mips/issues/1257)**
 512 | George Korepanov | 12 | [#28](https://github.com/MIPT-ILab/mipt-mips/issues/28), [#48](https://github.com/MIPT-ILab/mipt-mips/issues/48), [#49](https://github.com/MIPT-ILab/mipt-mips/issues/49), [#26](https://github.com/MIPT-ILab/mipt-mips/issues/26), [#60](https://github.com/MIPT-ILab/mipt-mips/issues/60), [#45](https://github.com/MIPT-ILab/mipt-mips/issues/45), [#73](https://github.com/MIPT-ILab/mipt-mips/issues/73) |
 711 | Vyacheslav Kompan | 11 | [#354](https://github.com/MIPT-ILab/mipt-mips/issues/354), [#662](https://github.com/MIPT-ILab/mipt-mips/issues/662), [#122](https://github.com/MIPT-ILab/mipt-mips/issues/122), ½[#290](https://github.com/MIPT-ILab/mipt-mips/issues/290)  |
 715 | Rustem Yunusov | 10 | [#901](https://github.com/MIPT-ILab/mipt-mips/issues/901), [#760](https://github.com/MIPT-ILab/mipt-mips/issues/760), [#614](https://github.com/MIPT-ILab/mipt-mips/issues/614) |
@@ -72,11 +92,10 @@ MIPT | Name | Score | Comments
 616 | Andrew Sultan | 4 | [#282](https://github.com/MIPT-ILab/mipt-mips/issues/282), [#132](https://github.com/MIPT-ILab/mipt-mips/issues/132) |
 518 | Alexander Seppar | 4 | [fc526cb8](https://github.com/MIPT-ILab/ca-lectures/commit/fc526cb8f59bc6d9a399f453b417afc45c21012e), [#25](https://github.com/MIPT-ILab/mipt-mips/issues/25), [#52](https://github.com/MIPT-ILab/mipt-mips/issues/52) |
 614 | Alexey Steksov | 3 | [#152](https://github.com/MIPT-ILab/mipt-mips/issues/152), [T#3](https://github.com/MIPT-ILab/mips-traces/issues/3) |
-717 | Ivan Startsev | 2 | [#525](https://github.com/MIPT-ILab/mipt-mips/issues/525) |
-717 | Arsen Davtyan | 2 | [#660](https://github.com/MIPT-ILab/mipt-mips/issues/660), [#643](https://github.com/MIPT-ILab/mipt-mips/issues/643) |
-612 | Danil Yarovoy | 2 | [T#4](https://github.com/MIPT-ILab/mips-traces/issues/4) |
-81? | Maxim Davydov | 1 | [#1096](https://github.com/MIPT-ILab/mipt-mips/issues/1096) |
-516 | Ivan Korostelev | 1 | [#32](https://github.com/MIPT-ILab/mipt-mips/issues/32) |
+
+Minor contributors: Ivan Startsev ([#525](https://github.com/MIPT-ILab/mipt-mips/issues/525)), Arsen Davtyan ([#660](https://github.com/MIPT-ILab/mipt-mips/issues/660), [#643](https://github.com/MIPT-ILab/mipt-mips/issues/643)), Danil Yarovoy ([T#4](https://github.com/MIPT-ILab/mips-traces/issues/4)), Maxim Davydov ([#1096](https://github.com/MIPT-ILab/mipt-mips/issues/1096)), Ivan Korostelev ([#32](https://github.com/MIPT-ILab/mipt-mips/issues/32)).
+
+RISC-V **B** instructions are delivered by Kirill Chemrov, Yaroslav Okatev, Alexandr Vinogradov, Airat Nazmiev, Roman Zlobin, Igor Bulatov, Daniel Kofanov, Nikolay Zernov, Nikita Gorbachev, Vladimir Prokhorov, Eric Konks, Maxim Davydov, and Ilya Burtakov.
 
 List of [Upcoming contributions](https://github.com/MIPT-ILab/mipt-mips/issues/assigned/*)
 
@@ -85,7 +104,8 @@ List of [Upcoming contributions](https://github.com/MIPT-ILab/mipt-mips/issues/a
 The project is mentored by [Kirill Korolev](https://github.com/kkorolev), and [Oleg Ladin](https://github.com/olegladin) under [Pavel Kryukov](https://github.com/pavelkryukov)'s supervising. For more information, check [this wiki page](https://github.com/MIPT-ILab/mipt-mips/wiki/About-Us) and [MIPT ILab site](https://mipt.ru/drec/about/ilab/)
 
 Additional repositories:
-* [MIPS traces](https://github.com/MIPT-ILab/mips-traces)
+* [Interactive MIPS traces](https://github.com/MIPT-ILab/mips-traces)
+* [Interactive RISC-V traces](https://github.com/MIPT-ILab/riscv-mars-examples)
 * [Lectures storage](https://github.com/MIPT-ILab/ca-lectures)
 * [MIPS-MIPS-CEN64](https://github.com/MIPT-ILab/cen64)
 * _[Branches imported from GoogleCode SVN](https://github.com/MIPT-ILab/mipt-mips-old-branches)_

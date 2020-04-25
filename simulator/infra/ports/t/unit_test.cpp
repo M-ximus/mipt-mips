@@ -4,9 +4,8 @@
  * Copyright 2019 MIPT-MIPS team
  */
 
-#include "../module.h"
 #include <catch.hpp>
-#include <map>
+#include <infra/ports/module.h>
 
 TEST_CASE( "Latency to string")
 {
@@ -74,10 +73,10 @@ struct PairOfPorts : public BaseTestRoot
     ReadPort<int>* rp;
     WritePort<int>* wp;
 
-    explicit PairOfPorts( uint32 bw = PORT_BW, Latency lat = PORT_LATENCY)
+    PairOfPorts()
     {
-        rp = make_read_port<int>( "Key", lat);
-        wp = make_write_port<int>( "Key", bw);
+        rp = make_read_port<int>( "Key", PORT_LATENCY);
+        wp = make_write_port<int>( "Key", PORT_BW);
         init_portmap();
     }
 };

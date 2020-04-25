@@ -5,10 +5,10 @@
  
 #include <catch.hpp>
 
-#include "../../t/check_coherency.h"
-#include "../cen64_memory.h"
+#include <memory/cen64/cen64_memory.h>
 #include <memory/elf/elf_loader.h>
 #include <memory/memory.h>
+#include <memory/t/check_coherency.h>
 
 // Mock CEN64 with our casual FuncMemory implementation
 struct bus_controller
@@ -35,7 +35,7 @@ extern "C"
 TEST_CASE( "bus_controller mock" )
 {
     bus_controller bus;
-    uint32 data;
+    uint32 data = 0;
 
     bus_write_word( &bus, 0x153, 0x22334455, all_ones<uint32>());
     bus_read_word( &bus, 0x153, &data);
@@ -75,7 +75,7 @@ TEST_CASE( "CEN64Memory: write byte" )
 
 TEST_CASE( "CEN64Memory" )
 {
-    static const std::string valid_elf_file = TEST_PATH "/mips_bin_exmpl.out";
+    static const std::string valid_elf_file = TEST_PATH "/elf/mips_bin_exmpl.out";
     static const uint64 dataSectAddr = 0x4100c0;
 
     auto golden_memory = FuncMemory::create_default_hierarchied_memory();

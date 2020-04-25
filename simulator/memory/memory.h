@@ -22,16 +22,12 @@
 
 struct FuncMemoryBadMapping final : Exception
 {
-    explicit FuncMemoryBadMapping( const std::string& msg)
-        : Exception( "Invalid FuncMemory mapping", msg)
-    { }
+    explicit FuncMemoryBadMapping( const std::string& msg);
 };
 
 struct FuncMemoryOutOfRange final : Exception
 {
-    explicit FuncMemoryOutOfRange( Addr addr, Addr mask)
-        : Exception( "Out of memory range", generate_string( addr, mask))
-    { }
+    explicit FuncMemoryOutOfRange( Addr addr, Addr mask);
 private:
     static std::string generate_string( Addr addr, Addr mask);
 };
@@ -39,12 +35,12 @@ private:
 class DestructableMemory
 {
 public:
-    DestructableMemory() = default;
-    virtual ~DestructableMemory() = default;
-    DestructableMemory( const DestructableMemory&) = default;
-    DestructableMemory( DestructableMemory&&) = default;
-    DestructableMemory& operator=( const DestructableMemory&) = default;
-    DestructableMemory& operator=( DestructableMemory&&) = default;
+    DestructableMemory();
+    virtual ~DestructableMemory();
+    DestructableMemory( const DestructableMemory&) = delete;
+    DestructableMemory( DestructableMemory&&) = delete;
+    DestructableMemory& operator=( const DestructableMemory&) = delete;
+    DestructableMemory& operator=( DestructableMemory&&) = delete;
 };
 
 class WriteableMemory;
@@ -52,7 +48,9 @@ class WriteableMemory;
 class ReadableMemory : public DestructableMemory
 {
 public:
-    virtual size_t memcpy_guest_to_host( Byte* dst, Addr src, size_t size) const noexcept = 0;
+    static std::shared_ptr<ReadableMemory> create_zero_memory();
+
+    virtual size_t memcpy_guest_to_host( std::byte* dst, Addr src, size_t size) const noexcept = 0;
     virtual void duplicate_to( std::shared_ptr<WriteableMemory> target) const = 0;
     virtual std::string dump() const = 0;
     virtual size_t strlen( Addr addr) const = 0;
@@ -71,7 +69,7 @@ template<typename T, Endian endian>
 T ReadableMemory::read( Addr addr) const noexcept
 {
     // NOLINTNEXTLINE(cppcoreguidelines-pro-type-member-init, hicpp-member-init) Initialized by memcpy
-    std::array<Byte, bytewidth<T>> bytes;
+    std::array<std::byte, bytewidth<T>> bytes;
     memcpy_guest_to_host( bytes.data(), addr, bytes.size());
     return pack_array<T, endian>( bytes);
 }
@@ -87,21 +85,12 @@ void ReadableMemory::load( Instr* instr) const
     instr->load( value);
 }
 
-class ZeroMemory : public ReadableMemory
-{
-public:
-    size_t memcpy_guest_to_host( Byte* dst, Addr /* src */, size_t size) const noexcept final;
-    void duplicate_to( std::shared_ptr<WriteableMemory> /* target */) const final { }
-    std::string dump() const final { return std::string( "empty memory\n"); }
-    size_t strlen( Addr /* addr */) const final { return 0; }
-};
-
 class WriteableMemory : public DestructableMemory
 {
 public:
-    virtual size_t memcpy_host_to_guest( Addr dst, const Byte* src, size_t size) = 0;
+    virtual size_t memcpy_host_to_guest( Addr dst, const std::byte* src, size_t size) = 0;
 
-    size_t memcpy_host_to_guest_noexcept( Addr dst, const Byte* src, size_t size) noexcept try
+    size_t memcpy_host_to_guest_noexcept( Addr dst, const std::byte* src, size_t size) noexcept try
     {
         return memcpy_host_to_guest( dst, src, size);
     }
@@ -119,6 +108,8 @@ public:
 
     void write_string( const std::string& value, Addr addr);
     void write_string_limited( const std::string& value, Addr addr, size_t size);
+
+    void memset( Addr addr, std::byte value, size_t size);
 private:
     void write_string_by_size( const std::string& value, Addr addr, size_t size);
 };
@@ -192,14 +183,18 @@ class FuncMemoryReplicant : public FuncMemory
 {
 public:
     explicit FuncMemoryReplicant( std::shared_ptr<FuncMemory> memory) : primary( std::move( memory)) { }
-    void add_replica( const std::shared_ptr<FuncMemory>& memory) { replicas.emplace_back( memory); }
+    void add_replica( const std::shared_ptr<FuncMemory>& memory)
+    {
+        replicas.emplace_back( memory);
+        primary->duplicate_to( memory);
+    }
 
-    size_t memcpy_guest_to_host( Byte* dst, Addr src, size_t size) const noexcept final
+    size_t memcpy_guest_to_host( std::byte* dst, Addr src, size_t size) const noexcept final
     {
         return primary->memcpy_guest_to_host( dst, src, size);
     }
 
-    size_t memcpy_host_to_guest( Addr dst, const Byte* src, size_t size) final
+    size_t memcpy_host_to_guest( Addr dst, const std::byte* src, size_t size) final
     {
         auto result = primary->memcpy_host_to_guest( dst, src, size);
         for ( auto& e : replicas)

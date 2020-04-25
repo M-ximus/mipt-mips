@@ -4,8 +4,8 @@
  * Copyright 2019 MIPT-MIPS
  */
 
-#include "../replicant.h"
 #include <catch.hpp>
+#include <kernel/replicant.h>
 
 TEST_CASE( "Replicant: set_target + get_pc")
 {
@@ -21,6 +21,7 @@ TEST_CASE( "Replicant: set_target + get_pc")
     CHECK( sim12.get_pc() == 0x100500);
     
     CHECK( sim12.sizeof_register() == 4);
+    CHECK( sim12.max_cpu_register() >= 32);
 }
 
 TEST_CASE( "Replicant: cpu register")

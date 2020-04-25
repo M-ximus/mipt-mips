@@ -4,14 +4,12 @@
  * Copyright 2019 MIPT-V team
  */
 
-
-
 #include "module.h"
 
-#include <boost/algorithm/string/split.hpp>
 #include <boost/algorithm/string.hpp>
-#include <boost/property_tree/ptree.hpp>
+#include <boost/algorithm/string/split.hpp>
 #include <boost/property_tree/json_parser.hpp>
+#include <boost/property_tree/ptree.hpp>
 
 namespace pt = boost::property_tree;
 
@@ -117,8 +115,8 @@ void Root::topology_dumping( bool dump, const std::string& filename)
 {
     if ( !dump)
         return;
+
     pt::ptree topology = topology_dumping_impl();
     pt::write_json( filename, topology);
-    sout.enable();
     sout << std::endl << "Module topology dumped into " + filename << std::endl;
 }

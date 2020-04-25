@@ -21,9 +21,11 @@ class Main : public MainWrapper
 {
     using MainWrapper::MainWrapper;
 private:
+    // NOLINTNEXTLINE(cppcoreguidelines-avoid-c-arrays, modernize-avoid-c-arrays, hicpp-avoid-c-arrays)
     int impl( int argc, const char* argv[]) const final; 
 };
 
+// NOLINTNEXTLINE(cppcoreguidelines-avoid-c-arrays, modernize-avoid-c-arrays, hicpp-avoid-c-arrays)
 int Main::impl( int argc, const char* argv[]) const {
     config::handleArgs( argc, argv, 1);
     auto memory = FuncMemory::create_default_hierarchied_memory();
@@ -33,8 +35,9 @@ int Main::impl( int argc, const char* argv[]) const {
     sim->write_csr_register( "mscratch", 0x400'0000);
 
     auto kernel = Kernel::create_configured_kernel();
-    kernel->connect_memory( memory);
     kernel->set_simulator( sim);
+    kernel->connect_memory( memory);
+    kernel->connect_exception_handler();
     kernel->load_file( config::binary_filename);
     sim->set_kernel( kernel);
 

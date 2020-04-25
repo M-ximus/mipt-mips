@@ -4,10 +4,18 @@
  * Copyright 2012-2018 uArchSim iLab project
  */
 
-#include "memory.h"
+#include <memory/memory.h>
 
 #include <sstream>
 #include <vector>
+
+FuncMemoryBadMapping::FuncMemoryBadMapping( const std::string& msg) :
+    Exception( "Invalid FuncMemory mapping", msg)
+{ }
+
+FuncMemoryOutOfRange::FuncMemoryOutOfRange( Addr addr, Addr mask) :
+    Exception( "Out of memory range", generate_string( addr, mask))
+{ }
 
 std::string FuncMemoryOutOfRange::generate_string( Addr addr, Addr mask)
 {
@@ -15,6 +23,24 @@ std::string FuncMemoryOutOfRange::generate_string( Addr addr, Addr mask)
     oss <<  "address: 0x" << std::hex << addr << "; max address: 0x" << mask;
     return oss.str();
 }
+
+DestructableMemory::DestructableMemory() = default;
+DestructableMemory::~DestructableMemory() = default;
+
+class ZeroMemory : public ReadableMemory
+{
+public:
+    size_t memcpy_guest_to_host( std::byte* dst, Addr /* src */, size_t size) const noexcept final;
+    void duplicate_to( std::shared_ptr<WriteableMemory> /* target */) const final { }
+    std::string dump() const final { return std::string( "empty memory\n"); }
+    size_t strlen( Addr /* addr */) const final { return 0; }
+};
+
+std::shared_ptr<ReadableMemory> ReadableMemory::create_zero_memory()
+{
+    return std::make_shared<ZeroMemory>();
+}
+
 
 std::string ReadableMemory::read_string( Addr addr) const
 {
@@ -50,8 +76,14 @@ void WriteableMemory::write_string_by_size( const std::string& value, Addr addr,
     memcpy_host_to_guest( addr, byte_cast( value.c_str()), size);
 }
 
-size_t ZeroMemory::memcpy_guest_to_host( Byte* dst, Addr /* src */, size_t size) const noexcept
+void WriteableMemory::memset( Addr addr, std::byte value, size_t size)
 {
-    std::fill_n( dst, size, Byte{});
+    for ( size_t i = 0; i < size; ++i)
+    	memcpy_host_to_guest( addr + i, &value, 1);
+}
+
+size_t ZeroMemory::memcpy_guest_to_host( std::byte* dst, Addr /* src */, size_t size) const noexcept
+{
+    std::fill_n( dst, size, std::byte{});
     return size;
 }
